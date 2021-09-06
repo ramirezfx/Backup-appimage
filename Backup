@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if pidof "rclone" >/dev/null; then
+    Xdialog --title "Status" --clear --infobox "Backup läuft bereits" 10 30
+else
+	if ! cat /proc/mounts | grep '/dev/sdb1 '; then
+		mount /dev/sdb1 /mnt/sdb1
+	fi
+	Xdialog --title "Synchronization finished" --clear --infobox "Backup startet" 10 30
+	rclone sync mega:/ local:/mnt/sdb1/backup/
+	Xdialog --title "Synchronization finished" --clear --msgbox "Backup beendet" 10 30
+fi
